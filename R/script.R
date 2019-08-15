@@ -4,7 +4,7 @@
 #   Check Package:             'Ctrl + Shift + E'
 #   Test Package:              'Ctrl + Shift + T'
 
-LabeledKMeansEst <-function(X, y, labels, k){
+LabeledKMeansEst <-function(X, y, labels, k, iter.max, ...){
   centroids<-c()
   centroids_label <- c()
 
@@ -12,7 +12,7 @@ LabeledKMeansEst <-function(X, y, labels, k){
     print(label)
 
     #Fit K-Mean for each
-    fit.kmean <- stats::kmeans(X[which(y==label),],k)
+    fit.kmean <- stats::kmeans( X[which(y==label),], k, iter.max 	= iter.max )
 
 
     centroids <- rbind(centroids, fit.kmean$centers)
@@ -28,12 +28,12 @@ LabeledKMeansEst <-function(X, y, labels, k){
 LabeledKMeans <- function(X, ...) UseMethod("LabeledKMeans")
 
 # Default Method
-LabeledKMeans.default <- function(X, y, labels, k, ...){
+LabeledKMeans.default <- function(X, y, labels, k, iter.max=10...){
   X <- as.matrix(X)
   y <- as.vector(y)
   labels <- as.vector(labels)
 
-  est <- LabeledKMeansEst(X, y, labels, k)
+  est <- LabeledKMeansEst(X, y, labels, k, iter.max)
   class(est) <- "LabeledKMeans"
   est
 
